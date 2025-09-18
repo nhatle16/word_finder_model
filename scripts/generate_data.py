@@ -31,12 +31,34 @@ def place_word(grid, word):
     end_x = x + dx * (len(word) - 1)
     end_y = y + dy * (len(word) - 1)
 
+    # Check if the word fits in the grid, then try to place it
+    if 0 <= end_x < n and 0 <= end_y < n:
+        possible = True
+        for i, char in enumerate(word):
+            # Get coordinates for the current character
+            new_x = x + dx * i
+            new_y = y + dy * i
+            # Validate placement
+            if grid[new_x][new_y] not in ('', char):
+                possible = False
+                break
+
+        if possible:
+            for i, char in enumerate(word):
+                new_x = x + dx * i
+                new_y = y + dy * i
+                grid[new_x][new_y] = char
+            
+            # Return the coordinates and direction of the placed word
+    return (x, y, dx, dy)
+    
 
 def generate_grid(n: int):
-    grid = [[random.choice(string.ascii_lowercase) for _ in range(n)] for _ in range(n)]
+    grid = [['' for _ in range(n)] for _ in range(n)]
     return grid
 
 grid = generate_grid(SIZE)
+print(place_word(grid, "python"))
 for r in grid:
     for char in r:
         print(char, end=' ')
