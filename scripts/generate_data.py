@@ -1,3 +1,5 @@
+from typing import List, Tuple
+
 import random
 import string
 
@@ -19,7 +21,7 @@ DIRECTIONS = [
 # Simple word list
 WORD_LIST = ["python", "java", "kotlin", "ruby", "swift", "go", "rust", "scala", "perl"]
 
-def place_word(grid, word):
+def place_word(grid: List[List[str]], word: str) -> Tuple[int, int, int, int]:
     n = len(grid)
     attempts = 100
 
@@ -57,13 +59,13 @@ def place_word(grid, word):
         attempts -= 1
     return None
 
-def generate_grid(n: int, words):
+def generate_grid(n: int, words: List[str]) -> Tuple[Tuple[List[List[str]]], List[Tuple[str, Tuple[int, int, int, int]]]]:
     grid = [['' for _ in range(n)] for _ in range(n)]
     labels = []
 
     # Place each word in the grid
     for word in words:
-        pos = place_word(grid, word)
+        pos = place_word(grid, word.upper())
         if pos:
             labels.append((word, pos))
 
@@ -72,10 +74,14 @@ def generate_grid(n: int, words):
         for x in range(n):
             if grid[y][x] == '':
                 grid[y][x] = random.choice(string.ascii_lowercase)
-    return grid
+    return grid, labels
 
-grid = generate_grid(n=SIZE, words=WORD_LIST)
+grid, labels = generate_grid(n=SIZE, words=WORD_LIST)
 for r in grid:
     for char in r:
         print(char, end=' ')
     print()
+
+print("Labels:")
+for label in labels:
+    print(label)
