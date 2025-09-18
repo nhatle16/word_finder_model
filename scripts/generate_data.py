@@ -76,12 +76,25 @@ def generate_grid(n: int, words: List[str]) -> Tuple[Tuple[List[List[str]]], Lis
                 grid[y][x] = random.choice(string.ascii_lowercase)
     return grid, labels
 
-grid, labels = generate_grid(n=SIZE, words=WORD_LIST)
-for r in grid:
-    for char in r:
-        print(char, end=' ')
-    print()
+def search_word(grid: List[List[str]], label: Tuple[str, Tuple[int, int, int, int]]) -> None:
+    if not label or not label[1]:
+        return None
 
-print("Labels:")
-for label in labels:
-    print(label)
+    n = len(grid)
+    word = label[0]
+    x, y, dx, dy = label[1]
+    
+    for i, ch in enumerate(word):
+        new_x = x + dx * i
+        new_y = y + dy * i
+        grid[new_x][new_y] = ch.upper()
+
+if __name__ == "__main__":
+    grid, labels = generate_grid(n=SIZE, words=WORD_LIST)
+    for label in labels:
+        search_word(grid, label)
+
+    for r in grid:
+        for char in r:
+            print(char, end=' ')
+        print()
