@@ -57,12 +57,24 @@ def place_word(grid, word):
         attempts -= 1
     return None
 
-def generate_grid(n: int):
+def generate_grid(n: int, words):
     grid = [['' for _ in range(n)] for _ in range(n)]
+    labels = []
+
+    # Place each word in the grid
+    for word in words:
+        pos = place_word(grid, word)
+        if pos:
+            labels.append((word, pos))
+
+    # Place random letters in empty cells
+    for y in range(n):
+        for x in range(n):
+            if grid[y][x] == '':
+                grid[y][x] = random.choice(string.ascii_lowercase)
     return grid
 
-grid = generate_grid(SIZE)
-place_word(grid, "python")
+grid = generate_grid(n=SIZE, words=WORD_LIST)
 for r in grid:
     for char in r:
         print(char, end=' ')
