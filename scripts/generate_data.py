@@ -59,13 +59,13 @@ def place_word(grid: List[List[str]], word: str) -> Tuple[int, int, int, int]:
         attempts -= 1
     return None
 
-def generate_grid(n: int, words: List[str]) -> Tuple[Tuple[List[List[str]]], List[Tuple[str, Tuple[int, int, int, int]]]]:
+def generate_grid(n: int, words: List[str]) -> Tuple[List[List[str]], List[Tuple[str, Tuple[int, int, int, int]]]]:
     grid = [['' for _ in range(n)] for _ in range(n)]
     labels = []
 
     # Place each word in the grid
     for word in words:
-        pos = place_word(grid, word.upper())
+        pos = place_word(grid, word)
         if pos:
             labels.append((word, pos))
 
