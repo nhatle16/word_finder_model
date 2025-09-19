@@ -10,7 +10,6 @@ def generate_sample(n, max_word_len=10):
     grid = [['' for _ in range(n)] for _ in range(n)]
     word = ''.join(random.choices(string.ascii_lowercase, k=random.randint(3,max_word_len)))
     pos = place_word(grid, word)
-    print(word)
     # Place random letters in empty cells
     for y in range(n):
         for x in range(n):
@@ -18,15 +17,18 @@ def generate_sample(n, max_word_len=10):
                 grid[y][x] = random.choice(string.ascii_lowercase)
     return grid, word, pos
 
-def create_dataset(num_samples=2000, grid_size=10):
-    grids = []
+def create_dataset(num_samples=2000, grid_size=10, max_word_len=10):
+    dataset = []
 
     # Create data samples
     for _ in range(num_samples):
-        grid, labels = generate_sample(n=grid_size, max_word_len=6)
-        encoded_grid = encode_grid(np.array(grid))
-        grids.append((encoded_grid, labels))
-    return grids
+        grid, word, (sx, sy, dx, dy) = generate_sample(n=grid_size, max_word_len=6)
+        word_data = (word, [encode_word(word), (sx, sy, dx, dy)])
+        dataset.append([encode_grid(np.array(grid)), word_data])
+
+    return dataset
 
 if __name__ == "__main__":
-    generate_sample(10)
+   dataset = create_dataset(num_samples=10)
+   for sample in dataset:
+       print(sample)
