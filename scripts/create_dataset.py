@@ -23,7 +23,7 @@ def create_dataset(num_samples=2000, grid_size=10, max_word_len=10):
     # Create data samples
     for _ in range(num_samples):
         grid, word, (sx, sy, dx, dy) = generate_sample(n=grid_size, max_word_len=6)
-        word_data = (word, [encode_word(word), (sx, sy, dx, dy)])
+        word_data = [[word, (sx, sy, dx, dy)], encode_word(word)]
         dataset.append([encode_grid(np.array(grid)), word_data])
 
     return dataset
