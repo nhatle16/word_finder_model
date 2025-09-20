@@ -23,12 +23,20 @@ def create_dataset(num_samples=2000, grid_size=10, max_word_len=10):
     # Create data samples
     for _ in range(num_samples):
         grid, word, (sx, sy, dx, dy) = generate_sample(n=grid_size, max_word_len=6)
-        word_data = [[word, (sx, sy, dx, dy)], encode_word(word)]
-        dataset.append([encode_grid(np.array(grid)), word_data])
+        grid_encoded = encode_grid(np.array(grid))
+        grid_normalized = (grid_encoded + 1) / 26.0  # Normalize to [0, 1]
+        dataset.append({
+            "grid": grid_normalized.tolist(),
+            "word": encode_word(word).tolist(),
+            "word_text": word,
+            "position": (sx, sy, dx, dy)
+        })
 
     return dataset
 
 if __name__ == "__main__":
-   dataset = create_dataset(num_samples=10)
-   for sample in dataset:
-       print(sample)
+    dataset = create_dataset(num_samples=10)
+
+    with open("data.txt", "w") as f:
+        for sample in dataset:
+            f.write(f"{sample}\n")
