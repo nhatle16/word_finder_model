@@ -25,10 +25,12 @@ if __name__ == "__main__":
     # Stacked the grids and words tensors
     combined_input= np.concatenate([grids, words_tensor], axis=-1)
 
-    # Create input layer and 2 convolution layers
-    input_data = layers.Input(shape=(10, 10, 2), name='input')
-    conv1 = layers.Conv2D(filters=32, kernel_size=(3, 3), activation='relu')(input_data)
-    conv2 = layers.Conv2D(filters=64, kernel_size=(3, 3), activation='relu')(conv1)
+    # Create input layer, 2 convolution layers, 1 flatten layer and 2 dense (neurons are fully connected) layers
+    input_data = layers.Input(shape=(10, 10, 2), name="input")
+    conv1 = layers.Conv2D(filters=32, kernel_size=(3, 3), activation='relu', name="conv-layer1")(input_data)
+    conv2 = layers.Conv2D(filters=64, kernel_size=(3, 3), activation='relu', name="conv-layer2")(conv1)
+    flatten = layers.Flatten(name="flatten")(conv2)
+    dense1 = layers.Dense(128, activation='relu', name="hidden1")
+    output = layers.Dense(4, activation='relu', name="hidden2")
 
-    model = models.Sequential(name="crossword_solver")
     model.summary()
