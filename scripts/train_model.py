@@ -19,8 +19,16 @@ if __name__ == "__main__":
     grids = grids.reshape((-1, 10, 10, 1))
 
     # Create a tensor for words
-    words_tensor = np.zeros(grids.shape[0], 10, 10, 1)
-    words_tensor[:, 0, :, 1] = words
+    words_tensor = np.zeros((grids.shape[0], 10, 10, 1))
+    words_tensor[:, 0, :, 0] = words
 
-    input_data = np.concatenate(grids, words_tensor, axis=-1)
-    
+    # Stacked the grids and words tensors
+    combined_input= np.concatenate([grids, words_tensor], axis=-1)
+
+    # Create input layer and 2 convolution layers
+    input_data = layers.Input(shape=(10, 10, 2), name='input')
+    conv1 = layers.Conv2D(filters=32, kernel_size=(3, 3), activation='relu')(input_data)
+    conv2 = layers.Conv2D(filters=64, kernel_size=(3, 3), activation='relu')(conv1)
+
+    model = models.Sequential(name="crossword_solver")
+    model.summary()
