@@ -33,4 +33,9 @@ if __name__ == "__main__":
     dense1 = layers.Dense(128, activation='relu', name="hidden1")
     output = layers.Dense(4, activation='relu', name="hidden2")
 
+    # Model compiling and training
+    model = models.Model(inputs=input_data, outputs=output)
+    model.compile(optimizer="adam", loss="mean_squared_error", metrics=['accuracy'])
+    model.fit(input_data, positions, epochs=500, batch_size=32, verbose=1)
+
     model.summary()
